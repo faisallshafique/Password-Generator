@@ -20,6 +20,7 @@ let passwordLength = 10;
 let checkCount = 0;
 handleSlider();
 //ste strength circle color to grey
+setIndicator("#ccc");
 
 
 //set passwordLength
@@ -27,11 +28,12 @@ function handleSlider() {
     inputSlider.value = passwordLength;
     lengthDisplay.innerText = passwordLength;
     //or kuch bhi karna chahiye ? - HW
+   
 }
 
 function setIndicator(color) {
     indicator.style.backgroundColor = color;
-    //shadow - HW
+    indicator.style.boxShadow = `0px 0px 12px 1px ${color}`;
 }
 
 function getRndInteger(min, max) {
@@ -98,7 +100,9 @@ async function copyContent() {
 function shufflePassword(array) {
     //Fisher Yates Method
     for (let i = array.length - 1; i > 0; i--) {
+        //random J, find out using random function
         const j = Math.floor(Math.random() * (i + 1));
+        //swap number at i index and j index
         const temp = array[i];
         array[i] = array[j];
         array[j] = temp;
@@ -149,9 +153,28 @@ generateBtn.addEventListener('click', () => {
         handleSlider();
     }
 
-    
+    // let's start the jouney to find new password
+    console.log("Starting the Journey");
     //remove old password
     password = "";
+
+    //let's put the stuff mentioned by checkboxes
+
+    // if(uppercaseCheck.checked) {
+    //     password += generateUpperCase();
+    // }
+
+    // if(lowercaseCheck.checked) {
+    //     password += generateLowerCase();
+    // }
+
+    // if(numbersCheck.checked) {
+    //     password += generateRandomNumber();
+    // }
+
+    // if(symbolsCheck.checked) {
+    //     password += generateSymbol();
+    // }
 
     let funcArr = [];
 
@@ -171,20 +194,21 @@ generateBtn.addEventListener('click', () => {
     for(let i=0; i<funcArr.length; i++) {
         password += funcArr[i]();
     }
-    
+    console.log("COmpulsory adddition done");
 
     //remaining adddition
     for(let i=0; i<passwordLength-funcArr.length; i++) {
         let randIndex = getRndInteger(0 , funcArr.length);
+        console.log("randIndex" + randIndex);
         password += funcArr[randIndex]();
     }
     console.log("Remaining adddition done");
     //shuffle the password
     password = shufflePassword(Array.from(password));
-   
+    console.log("Shuffling done");
     //show in UI
     passwordDisplay.value = password;
-    
+    console.log("UI adddition done");
     //calculate strength
     calcStrength();
 });
